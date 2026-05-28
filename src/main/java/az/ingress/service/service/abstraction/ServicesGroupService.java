@@ -1,5 +1,6 @@
 package az.ingress.service.service.abstraction;
 
+import az.ingress.service.dao.entity.ServicesGroupEntity;
 import az.ingress.service.model.request.CreateServicesGroupRequest;
 import az.ingress.service.model.response.ServicesGroupResponse;
 import jakarta.validation.Valid;
@@ -12,4 +13,6 @@ public interface ServicesGroupService {
     List<ServicesGroupResponse> getServicesGroup();
 
     ServicesGroupResponse getServicesGroup(Long id);
+
+    ServicesGroupEntity getServicesGroupEntity(Long id);
 }

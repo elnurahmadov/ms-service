@@ -41,7 +41,7 @@ public class ServicesGroupServiceHandler implements ServicesGroupService {
     public void createServicesGroup(CreateServicesGroupRequest request) {
 
         DisplayTextEntity displayText = DISPLAY_TEXT_MAPPER.toEntity(
-                request,
+                request.getLanguage(),
                 SERVICES_GROUP_DISPLAY_TEXT_ID
         );
 
@@ -76,6 +76,11 @@ public class ServicesGroupServiceHandler implements ServicesGroupService {
     @Override
     public ServicesGroupResponse getServicesGroup(Long id) {
         return SERVICES_GROUP_MAPPER.toResponse(fetchServicesGroupIfExist(id));
+    }
+
+    @Override
+    public ServicesGroupEntity getServicesGroupEntity(Long id) {
+        return fetchServicesGroupIfExist(id);
     }
 
     private ServicesGroupEntity fetchServicesGroupIfExist(Long id) {

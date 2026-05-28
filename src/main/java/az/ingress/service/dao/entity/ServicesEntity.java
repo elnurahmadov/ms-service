@@ -47,7 +47,7 @@ public class ServicesEntity {
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "services_group_id")
     @ToString.Exclude
-    private ServicesGroupEntity serviceGroup;
+    private ServicesGroupEntity servicesGroup;
 
     private String serviceCode;
 

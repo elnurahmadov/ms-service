@@ -4,5 +4,6 @@ public enum ServiceType {
     DECLARATION,
     INVOICE,
     PAYMENT,
-    MESSAGE
+    MESSAGE,
+    OTHER
 }
