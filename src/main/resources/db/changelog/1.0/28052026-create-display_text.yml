@@ -1,0 +1,43 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-display_text
+      author: elnur.ahmadov
+      changes:
+        - createTable:
+            tableName: display_text
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: column_name
+                  type: VARCHAR(64)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: az
+                  type: TEXT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: en
+                  type: TEXT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: ru
+                  type: TEXT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: TIMESTAMP
+                  defaultValue: now()
+              - column:
+                  name: updated_at
+                  type: TIMESTAMP
+                  defaultValue: now()
