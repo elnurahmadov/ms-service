@@ -47,7 +47,7 @@ public class ServicesGroupServiceHandler implements ServicesGroupService {
         );
 
         ServicesGroupEntity servicesGroup = ServicesGroupEntity.builder()
-                .displayTextEntity(displayText)
+                .displayText(displayText)
                 .build();
 
         servicesGroupRepository.save(servicesGroup);
@@ -90,7 +90,7 @@ public class ServicesGroupServiceHandler implements ServicesGroupService {
         ServicesGroupEntity servicesGroup = fetchServicesGroupIfExist(id);
 
         displayTextService.updateDisplayText(
-                servicesGroup.getDisplayTextEntity().getId(),
+                servicesGroup.getDisplayText().getId(),
                 language
         );
         servicesGroup.setUpdatedAt(LocalDateTime.now());

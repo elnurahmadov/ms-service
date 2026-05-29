@@ -17,7 +17,7 @@ public enum ServicesGroupMapper {
 
     public ServicesGroupResponse toResponse(ServicesGroupEntity entity) {
 
-        DisplayTextEntity displayTextEntity = entity.getDisplayTextEntity();
+        DisplayTextEntity displayTextEntity = entity.getDisplayText();
 
         return ServicesGroupResponse.builder()
                 .id(entity.getId())

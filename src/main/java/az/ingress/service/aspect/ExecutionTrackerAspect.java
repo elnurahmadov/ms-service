@@ -17,12 +17,12 @@ public class ExecutionTrackerAspect {
         long startTime = System.currentTimeMillis();
         try {
             Object result = joinPoint.proceed();
-            log.info("Method {} executed in {} ms",
+            log.info("ActionLog.logAround.info: Method {} executed in {} ms",
                     joinPoint.getSignature().getName(),
                     System.currentTimeMillis() - startTime);
             return result;
         } catch (Throwable ex) {
-            log.warn("Method {} failed after {} ms",
+            log.warn("ActionLog.logAround.warning: Method {} failed after {} ms",
                     joinPoint.getSignature().getName(),
                     System.currentTimeMillis() - startTime);
             throw ex;

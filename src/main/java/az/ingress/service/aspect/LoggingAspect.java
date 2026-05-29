@@ -23,7 +23,8 @@ public class LoggingAspect {
 
     @Before("controllerMethods()")
     public void logBefore(JoinPoint joinPoint) {
-        log.info("Called controller method : {} with args : {}", joinPoint.getSignature().getName(),
+        log.info("ActionLog.logBefore.info: Called controller method : {} with args : {}",
+                joinPoint.getSignature().getName(),
                 Arrays.stream(joinPoint.getArgs())
                         .map(arg -> arg instanceof String s && s.length() > 50 ? "[TRUNCATED]" : arg)
                         .toList());
@@ -31,12 +32,13 @@ public class LoggingAspect {
 
     @AfterReturning(pointcut = "controllerMethods()", returning = "result")
     public void logAfterReturning(JoinPoint joinPoint, Object result) {
-        log.info("Called controller method : {} returned with status : {}", joinPoint.getSignature().getName(),
+        log.info("ActionLog.logAfterReturning.info: Called controller method : {} returned with status : {}",
+                joinPoint.getSignature().getName(),
                 result instanceof ResponseEntity<?> r ? r.getStatusCode() : result);
     }
 
     @AfterThrowing(pointcut = "controllerMethods()", throwing = "ex")
     public void logAfterThrowing(JoinPoint joinPoint, Exception ex) {
-        log.error("Exception in method : {}", joinPoint.getSignature().getName(), ex);
+        log.error("ActionLog.logAfterThrowing.error: Exception in method : {}", joinPoint.getSignature().getName(), ex);
     }
 }

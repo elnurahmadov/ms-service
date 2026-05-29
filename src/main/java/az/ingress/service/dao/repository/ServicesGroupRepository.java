@@ -10,10 +10,10 @@ import java.util.Optional;
 public interface ServicesGroupRepository extends JpaRepository<ServicesGroupEntity, Long> {
 
     @Override
-    @EntityGraph(attributePaths = "displayTextEntity")
+    @EntityGraph(attributePaths = "displayText")
     List<ServicesGroupEntity> findAll();
 
     @Override
-    @EntityGraph(attributePaths = "displayTextEntity")
+    @EntityGraph(attributePaths = "displayText")
     Optional<ServicesGroupEntity> findById(Long id);
 }

@@ -39,7 +39,7 @@ public class ServicesGroupEntity {
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "display_text_id")
     @ToString.Exclude
-    private DisplayTextEntity displayTextEntity;
+    private DisplayTextEntity displayText;
 
     @CreationTimestamp
     private LocalDateTime createdAt;

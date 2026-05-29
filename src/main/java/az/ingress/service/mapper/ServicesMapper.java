@@ -3,7 +3,9 @@ package az.ingress.service.mapper;
 import az.ingress.service.dao.entity.DisplayTextEntity;
 import az.ingress.service.dao.entity.ServicesEntity;
 import az.ingress.service.dao.entity.ServicesGroupEntity;
+import az.ingress.service.model.dto.Language;
 import az.ingress.service.model.request.CreateServiceRequest;
+import az.ingress.service.model.response.ServicesResponse;
 
 import java.util.Arrays;
 import java.util.List;
@@ -62,5 +64,24 @@ public enum ServicesMapper {
                                         word.substring(1)
                         )
                         .collect(Collectors.joining());
+    }
+
+    public List<ServicesResponse> toResponseList(List<ServicesEntity> servicesEntities) {
+
+        return servicesEntities.stream().map(this::toResponse).toList();
+    }
+
+    public ServicesResponse toResponse(ServicesEntity entity) {
+
+        DisplayTextEntity displayTextEntity = entity.getDisplayText();
+
+        return ServicesResponse.builder()
+                .id(entity.getId())
+                .language(Language.builder()
+                        .az(displayTextEntity.getAz())
+                        .en(displayTextEntity.getEn())
+                        .ru(displayTextEntity.getRu())
+                        .build())
+                .build();
     }
 }
