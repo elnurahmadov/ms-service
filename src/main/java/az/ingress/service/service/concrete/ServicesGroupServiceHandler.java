@@ -22,7 +22,7 @@ import java.util.List;
 import static az.ingress.service.exception.ErrorMessage.SERVICES_GROUP_NOT_FOUND;
 import static az.ingress.service.mapper.ServicesGroupMapper.SERVICES_GROUP_MAPPER;
 import static az.ingress.service.model.constants.Cache.CACHE_EXPIRATION_HOURS;
-import static az.ingress.service.model.constants.Cache.SERVICE_GROUP_CACHE_KEY;
+import static az.ingress.service.model.constants.Cache.SERVICES_GROUP_CACHE_KEY;
 import static az.ingress.service.model.enums.DisplayTextColumn.SERVICES_GROUP_DISPLAY_TEXT_ID;
 import static java.time.temporal.ChronoUnit.HOURS;
 
@@ -59,7 +59,7 @@ public class ServicesGroupServiceHandler implements ServicesGroupService {
 
         List<ServicesGroupResponse> response;
 
-        response = cacheUtil.getBucket(SERVICE_GROUP_CACHE_KEY);
+        response = cacheUtil.getBucket(SERVICES_GROUP_CACHE_KEY);
 
         if (response != null) {
             return response;
@@ -68,7 +68,7 @@ public class ServicesGroupServiceHandler implements ServicesGroupService {
         List<ServicesGroupEntity> servicesGroupEntities = servicesGroupRepository.findAll();
         response = SERVICES_GROUP_MAPPER.toResponseList(servicesGroupEntities);
 
-        cacheUtil.saveToCache(SERVICE_GROUP_CACHE_KEY, response, CACHE_EXPIRATION_HOURS, HOURS);
+        cacheUtil.saveToCache(SERVICES_GROUP_CACHE_KEY, response, CACHE_EXPIRATION_HOURS, HOURS);
 
         return response;
     }
@@ -107,6 +107,6 @@ public class ServicesGroupServiceHandler implements ServicesGroupService {
     }
 
     private void clearAllCaches() {
-        cacheUtil.deleteKey(SERVICE_GROUP_CACHE_KEY);
+        cacheUtil.deleteKey(SERVICES_GROUP_CACHE_KEY);
     }
 }

@@ -17,6 +17,8 @@ import static java.lang.Boolean.TRUE;
 public enum ServicesMapper {
     SERVICES_MAPPER;
 
+    private static final int SERVICE_CODE_MAX_LENGTH = 64;
+
     public ServicesEntity toEntity(CreateServiceRequest request,
                                    DisplayTextEntity displayText,
                                    ServicesGroupEntity servicesGroup) {
@@ -49,14 +51,13 @@ public enum ServicesMapper {
                 )
                 .map(String::toLowerCase)
                 .filter(word -> !ignoredWords.contains(word))
-                .limit(4)
                 .toList();
 
         if (words.isEmpty()) {
             return "";
         }
 
-        return words.get(0) +
+        String camelCase = words.get(0) +
                 words.stream()
                         .skip(1)
                         .map(word ->
@@ -64,6 +65,10 @@ public enum ServicesMapper {
                                         word.substring(1)
                         )
                         .collect(Collectors.joining());
+
+        return camelCase.length() > SERVICE_CODE_MAX_LENGTH
+                ? camelCase.substring(0, SERVICE_CODE_MAX_LENGTH)
+                : camelCase;
     }
 
     public List<ServicesResponse> toResponseList(List<ServicesEntity> servicesEntities) {
