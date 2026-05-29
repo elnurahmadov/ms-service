@@ -1,5 +1,6 @@
 package az.ingress.service.controller;
 
+import az.ingress.service.model.dto.Language;
 import az.ingress.service.model.request.CreateServicesGroupRequest;
 import az.ingress.service.model.response.ServicesGroupResponse;
 import az.ingress.service.service.abstraction.ServicesGroupService;
@@ -8,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -38,5 +40,10 @@ public class ServicesGroupController {
     @GetMapping("/{id}")
     public ServicesGroupResponse getServicesGroup(@PathVariable Long id) {
         return servicesGroupService.getServicesGroup(id);
+    }
+
+    @PutMapping("/{id}")
+    public void updateServicesGroup(@PathVariable Long id, @RequestBody @Valid Language language) {
+        servicesGroupService.updateServicesGroup(id, language);
     }
 }
