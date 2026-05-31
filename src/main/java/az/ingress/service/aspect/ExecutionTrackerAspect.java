@@ -14,9 +14,9 @@ public class ExecutionTrackerAspect {
     @Around("@annotation(az.ingress.service.aspect.ExecutionTracker) || " +
             "@within(az.ingress.service.aspect.ExecutionTracker)")
     public Object logAround(ProceedingJoinPoint joinPoint) throws Throwable {
-        long startTime = System.currentTimeMillis();
+        var startTime = System.currentTimeMillis();
         try {
-            Object result = joinPoint.proceed();
+            var result = joinPoint.proceed();
             log.info("ActionLog.logAround.info: Method {} executed in {} ms",
                     joinPoint.getSignature().getName(),
                     System.currentTimeMillis() - startTime);
