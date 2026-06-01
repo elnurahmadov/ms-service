@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ServicesDetailedResponse {
+public class ServiceDetailedResponse {
     private Long id;
     private Language language;
     private Long servicesGroupId;

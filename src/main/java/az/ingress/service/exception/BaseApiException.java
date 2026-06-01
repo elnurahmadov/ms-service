@@ -1,11 +1,15 @@
 package az.ingress.service.exception;
 
-import static az.ingress.service.model.constants.LocalizationConstants.ERROR_BUNDLE;
-import static az.ingress.service.util.LocalizationUtil.LOCALIZATION_UTIL;
+import lombok.Getter;
 
+@Getter
 public abstract class BaseApiException extends RuntimeException {
+    private final ErrorMessage errorMessage;
+    private final transient Object[] arguments;
 
-    protected BaseApiException(ErrorMessage message, Object... arguments) {
-        super(LOCALIZATION_UTIL.getMessageByKey(ERROR_BUNDLE, message.getValue()).formatted(arguments));
+    protected BaseApiException(ErrorMessage errorMessage, Object... arguments) {
+        super(errorMessage.getValue());
+        this.errorMessage = errorMessage;
+        this.arguments = arguments;
     }
 }

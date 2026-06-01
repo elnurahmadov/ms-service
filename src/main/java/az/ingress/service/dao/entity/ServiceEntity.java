@@ -33,7 +33,7 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 @FieldNameConstants
 @Entity
 @Table(name = "services")
-public class ServicesEntity {
+public class ServiceEntity {
 
     @Id
     @GeneratedValue(strategy = IDENTITY)

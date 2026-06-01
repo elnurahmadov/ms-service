@@ -2,13 +2,16 @@ package az.ingress.service.service.concrete;
 
 import az.ingress.service.aspect.ExecutionTracker;
 import az.ingress.service.dao.entity.DisplayTextEntity;
-import az.ingress.service.dao.entity.ServicesEntity;
-import az.ingress.service.dao.repository.ServicesRepository;
+import az.ingress.service.dao.entity.ServiceEntity;
+import az.ingress.service.dao.repository.ServiceRepository;
+import az.ingress.service.exception.NotFoundException;
+import az.ingress.service.logger.ApplicationLogger;
 import az.ingress.service.model.request.CreateServiceRequest;
-import az.ingress.service.model.response.ServicesResponse;
+import az.ingress.service.model.response.ServiceDetailedResponse;
+import az.ingress.service.model.response.ServiceResponse;
 import az.ingress.service.service.abstraction.DisplayTextService;
+import az.ingress.service.service.abstraction.ServiceService;
 import az.ingress.service.service.abstraction.ServicesGroupService;
-import az.ingress.service.service.abstraction.ServicesService;
 import az.ingress.service.util.CacheUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,7 +19,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-import static az.ingress.service.mapper.ServicesMapper.SERVICES_MAPPER;
+import static az.ingress.service.exception.ErrorMessage.SERVICE_NOT_FOUND;
+import static az.ingress.service.mapper.ServiceMapper.SERVICE_MAPPER;
 import static az.ingress.service.model.constants.Cache.CACHE_EXPIRATION_HOURS;
 import static az.ingress.service.model.constants.Cache.SERVICES_CACHE_KEY;
 import static az.ingress.service.model.enums.DisplayTextColumn.SERVICES_GROUP_DISPLAY_TEXT_ID;
@@ -25,11 +29,13 @@ import static java.time.temporal.ChronoUnit.HOURS;
 @Service
 @RequiredArgsConstructor
 @ExecutionTracker
-public class ServicesServiceHandler implements ServicesService {
+public class ServiceServiceHandler implements ServiceService {
+
+    private final ApplicationLogger logger = ApplicationLogger.getLogger(ServiceServiceHandler.class);
 
     private final ServicesGroupService servicesGroupService;
     private final DisplayTextService displayTextService;
-    private final ServicesRepository servicesRepository;
+    private final ServiceRepository serviceRepository;
     private final CacheUtil cacheUtil;
 
     @Override
@@ -43,20 +49,20 @@ public class ServicesServiceHandler implements ServicesService {
                 SERVICES_GROUP_DISPLAY_TEXT_ID
         );
 
-        ServicesEntity servicesEntity = SERVICES_MAPPER.toEntity(
+        ServiceEntity serviceEntity = SERVICE_MAPPER.toEntity(
                 request,
                 displayText,
                 servicesGroup
         );
 
-        servicesRepository.save(servicesEntity);
+        serviceRepository.save(serviceEntity);
         clearAllCaches();
     }
 
     @Override
-    public List<ServicesResponse> getServices() {
+    public List<ServiceResponse> getServices() {
 
-        List<ServicesResponse> response;
+        List<ServiceResponse> response;
 
         response = cacheUtil.getBucket(SERVICES_CACHE_KEY);
 
@@ -64,12 +70,25 @@ public class ServicesServiceHandler implements ServicesService {
             return response;
         }
 
-        List<ServicesEntity> servicesEntities = servicesRepository.findAll();
-        response = SERVICES_MAPPER.toResponseList(servicesEntities);
+        List<ServiceEntity> servicesEntities = serviceRepository.findAll();
+        response = SERVICE_MAPPER.toResponseList(servicesEntities);
 
         cacheUtil.saveToCache(SERVICES_CACHE_KEY, response, CACHE_EXPIRATION_HOURS, HOURS);
 
         return response;
+    }
+
+    @Override
+    public ServiceDetailedResponse getServiceById(Long id) {
+        return SERVICE_MAPPER.toDetailedResponse(fetchServiceIfExist(id));
+    }
+
+    private ServiceEntity fetchServiceIfExist(Long id) {
+        return serviceRepository.findById(id)
+                .orElseThrow(() -> {
+                    logger.error("Service with id {} not found", id);
+                    return new NotFoundException(SERVICE_NOT_FOUND, id);
+                });
     }
 
     private void clearAllCaches() {

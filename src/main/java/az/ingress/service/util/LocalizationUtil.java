@@ -8,7 +8,10 @@ public enum LocalizationUtil {
     LOCALIZATION_UTIL;
 
     public String getMessageByKey(String bundle, String key) {
-        var resourceBundle = ResourceBundle.getBundle(bundle, getLocale());
-        return resourceBundle.getString(key);
+        return ResourceBundle.getBundle(bundle, getLocale()).getString(key);
+    }
+
+    public String getMessageByKey(String bundle, String key, Object... args) {
+        return getMessageByKey(bundle, key).formatted(args);
     }
 }

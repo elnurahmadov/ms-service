@@ -13,7 +13,7 @@ import java.io.Serializable;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ServicesResponse implements Serializable {
+public class ServiceResponse implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 

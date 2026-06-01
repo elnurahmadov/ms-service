@@ -101,7 +101,7 @@ public class ServicesGroupServiceHandler implements ServicesGroupService {
     private ServicesGroupEntity fetchServicesGroupIfExist(Long id) {
         return servicesGroupRepository.findById(id)
                 .orElseThrow(() -> {
-                    logger.error("Services Group not found with id: {}", id);
+                    logger.error("Services Group with id {} not found", id);
                     return new NotFoundException(SERVICES_GROUP_NOT_FOUND, id);
                 });
     }
