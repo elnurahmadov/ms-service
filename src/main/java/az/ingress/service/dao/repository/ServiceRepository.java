@@ -9,11 +9,13 @@ import java.util.Optional;
 
 public interface ServiceRepository extends CrudRepository<ServiceEntity, Long> {
 
+    @Override
     @EntityGraph(attributePaths = "displayText")
-    List<ServiceEntity> findAllWithDisplayText();
+    List<ServiceEntity> findAll();
 
+    @Override
     @EntityGraph(attributePaths = {"displayText", "servicesGroup"})
-    Optional<ServiceEntity> findDetailedById(Long id);
+    Optional<ServiceEntity> findById(Long id);
 
     @EntityGraph(attributePaths = "displayText")
     List<ServiceEntity> getServicesByServicesGroupId(Long id);
