@@ -55,7 +55,7 @@ public class ServicesGroupServiceHandler implements ServicesGroupService {
     }
 
     @Override
-    public List<ServicesGroupResponse> getServicesGroup() {
+    public List<ServicesGroupResponse> getServicesGroups() {
 
         List<ServicesGroupResponse> response;
 

@@ -11,7 +11,7 @@ import java.util.List;
 public interface ServicesGroupService {
     void createServicesGroup(@Valid CreateServicesGroupRequest request);
 
-    List<ServicesGroupResponse> getServicesGroup();
+    List<ServicesGroupResponse> getServicesGroups();
 
     ServicesGroupResponse getServicesGroup(Long id);
 

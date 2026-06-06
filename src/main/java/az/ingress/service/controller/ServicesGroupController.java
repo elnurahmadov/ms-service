@@ -33,8 +33,8 @@ public class ServicesGroupController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ServicesGroupResponse>> getServicesGroup() {
-        return ResponseEntity.ok(servicesGroupService.getServicesGroup());
+    public ResponseEntity<List<ServicesGroupResponse>> getServicesGroups() {
+        return ResponseEntity.ok(servicesGroupService.getServicesGroups());
     }
 
     @GetMapping("/{id}")
