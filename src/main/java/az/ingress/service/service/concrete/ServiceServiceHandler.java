@@ -71,7 +71,7 @@ public class ServiceServiceHandler implements ServiceService {
             return response;
         }
 
-        List<ServiceEntity> servicesEntities = serviceRepository.findAll();
+        List<ServiceEntity> servicesEntities = serviceRepository.findAllWithDisplayText();
         response = SERVICE_MAPPER.toResponseList(servicesEntities);
 
         cacheUtil.saveToCache(SERVICES_CACHE_KEY, response, CACHE_EXPIRATION_HOURS, HOURS);
@@ -93,7 +93,7 @@ public class ServiceServiceHandler implements ServiceService {
     }
 
     private ServiceEntity fetchServiceIfExist(Long id) {
-        return serviceRepository.findById(id)
+        return serviceRepository.findDetailedById(id)
                 .orElseThrow(() -> {
                     logger.error("Service with id {} not found", id);
                     return new NotFoundException(SERVICE_NOT_FOUND, id);
