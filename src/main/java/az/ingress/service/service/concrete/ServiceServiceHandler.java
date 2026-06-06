@@ -1,7 +1,6 @@
 package az.ingress.service.service.concrete;
 
 import az.ingress.service.aspect.ExecutionTracker;
-import az.ingress.service.dao.entity.DisplayTextEntity;
 import az.ingress.service.dao.entity.ServiceEntity;
 import az.ingress.service.dao.repository.ServiceRepository;
 import az.ingress.service.exception.NotFoundException;
@@ -14,7 +13,6 @@ import az.ingress.service.service.abstraction.ServiceService;
 import az.ingress.service.service.abstraction.ServicesGroupService;
 import az.ingress.service.util.CacheUtil;
 import lombok.RequiredArgsConstructor;
-import org.jspecify.annotations.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -45,12 +43,12 @@ public class ServiceServiceHandler implements ServiceService {
 
         var servicesGroup = servicesGroupService.getServicesGroupEntity(request.getServicesGroupId());
 
-        DisplayTextEntity displayText = displayTextService.createDisplayText(
+        var displayText = displayTextService.createDisplayText(
                 request.getLanguage(),
                 SERVICES_DISPLAY_TEXT_ID
         );
 
-        ServiceEntity serviceEntity = SERVICE_MAPPER.toEntity(
+        var serviceEntity = SERVICE_MAPPER.toEntity(
                 request,
                 displayText,
                 servicesGroup
@@ -71,7 +69,7 @@ public class ServiceServiceHandler implements ServiceService {
             return response;
         }
 
-        List<ServiceEntity> servicesEntities = serviceRepository.findAll();
+        var servicesEntities = serviceRepository.findAll();
         response = SERVICE_MAPPER.toResponseList(servicesEntities);
 
         cacheUtil.saveToCache(SERVICES_CACHE_KEY, response, CACHE_EXPIRATION_HOURS, HOURS);
@@ -85,7 +83,7 @@ public class ServiceServiceHandler implements ServiceService {
     }
 
     @Override
-    public @Nullable List<ServiceResponse> getServicesByGroupId(Long id) {
+    public List<ServiceResponse> getServicesByGroupId(Long id) {
         var servicesGroup = servicesGroupService.getServicesGroupEntity(id);
         var servicesEntities = serviceRepository.getServicesByServicesGroupId(servicesGroup.getId());
 
@@ -93,8 +91,14 @@ public class ServiceServiceHandler implements ServiceService {
     }
 
     @Override
+    @Transactional
     public void deleteService(Long id) {
-        serviceRepository.deleteById(id);
+        var serviceEntity = fetchServiceIfExist(id);
+
+        var displayTextId = serviceEntity.getDisplayText().getId();
+
+        serviceRepository.delete(serviceEntity);
+        displayTextService.deleteDisplayText(displayTextId);
 
         clearAllCaches();
     }

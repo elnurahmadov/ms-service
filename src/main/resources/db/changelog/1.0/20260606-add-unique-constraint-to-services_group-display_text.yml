@@ -1,0 +1,9 @@
+databaseChangeLog:
+  - changeSet:
+      id: add-unique-constraint-to-services_group-display_text
+      author: elnur.ahmadov
+      changes:
+        - addUniqueConstraint:
+            tableName: services_group
+            columnNames: display_text_id
+            constraintName: uk_services_group_display_text
