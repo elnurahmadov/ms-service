@@ -14,6 +14,7 @@ import az.ingress.service.service.abstraction.ServiceService;
 import az.ingress.service.service.abstraction.ServicesGroupService;
 import az.ingress.service.util.CacheUtil;
 import lombok.RequiredArgsConstructor;
+import org.jspecify.annotations.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,7 +24,7 @@ import static az.ingress.service.exception.ErrorMessage.SERVICE_NOT_FOUND;
 import static az.ingress.service.mapper.ServiceMapper.SERVICE_MAPPER;
 import static az.ingress.service.model.constants.Cache.CACHE_EXPIRATION_HOURS;
 import static az.ingress.service.model.constants.Cache.SERVICES_CACHE_KEY;
-import static az.ingress.service.model.enums.DisplayTextColumn.SERVICES_GROUP_DISPLAY_TEXT_ID;
+import static az.ingress.service.model.enums.DisplayTextColumn.SERVICES_DISPLAY_TEXT_ID;
 import static java.time.temporal.ChronoUnit.HOURS;
 
 @Service
@@ -46,7 +47,7 @@ public class ServiceServiceHandler implements ServiceService {
 
         DisplayTextEntity displayText = displayTextService.createDisplayText(
                 request.getLanguage(),
-                SERVICES_GROUP_DISPLAY_TEXT_ID
+                SERVICES_DISPLAY_TEXT_ID
         );
 
         ServiceEntity serviceEntity = SERVICE_MAPPER.toEntity(
@@ -81,6 +82,14 @@ public class ServiceServiceHandler implements ServiceService {
     @Override
     public ServiceDetailedResponse getServiceById(Long id) {
         return SERVICE_MAPPER.toDetailedResponse(fetchServiceIfExist(id));
+    }
+
+    @Override
+    public @Nullable List<ServiceResponse> getServicesByGroupId(Long id) {
+        var servicesGroup = servicesGroupService.getServicesGroupEntity(id);
+        var servicesEntities = serviceRepository.getServicesByServicesGroupId(servicesGroup.getId());
+
+        return SERVICE_MAPPER.toResponseList(servicesEntities);
     }
 
     private ServiceEntity fetchServiceIfExist(Long id) {

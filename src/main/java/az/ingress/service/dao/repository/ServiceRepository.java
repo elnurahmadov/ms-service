@@ -16,4 +16,7 @@ public interface ServiceRepository extends CrudRepository<ServiceEntity, Long> {
     @Override
     @EntityGraph(attributePaths = {"displayText", "servicesGroup"})
     Optional<ServiceEntity> findById(Long id);
+
+    @EntityGraph(attributePaths = "displayText")
+    List<ServiceEntity> getServicesByServicesGroupId(Long id);
 }

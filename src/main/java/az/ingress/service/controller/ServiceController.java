@@ -40,4 +40,9 @@ public class ServiceController {
     public ResponseEntity<ServiceDetailedResponse> getServiceById(@PathVariable Long id) {
         return ResponseEntity.ok(serviceService.getServiceById(id));
     }
+
+    @GetMapping("/by-group/{id}")
+    public ResponseEntity<List<ServiceResponse>> getServicesByGroupId(@PathVariable Long id) {
+        return ResponseEntity.ok(serviceService.getServicesByGroupId(id));
+    }
 }
