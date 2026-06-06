@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -55,5 +56,12 @@ public class ServiceController {
             description = "Returns all services matching the given service group ID.")
     public ResponseEntity<List<ServiceResponse>> getServicesByGroupId(@PathVariable Long id) {
         return ResponseEntity.ok(serviceService.getServicesByGroupId(id));
+    }
+
+    @DeleteMapping("/{id}")
+    @Operation(summary = "Delete a service", description = "Deletes the specified service by its identifier.")
+    public ResponseEntity<Void> deleteService(@PathVariable Long id) {
+        serviceService.deleteService(id);
+        return ResponseEntity.noContent().build();
     }
 }

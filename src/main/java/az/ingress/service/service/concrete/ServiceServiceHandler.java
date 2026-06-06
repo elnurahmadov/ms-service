@@ -92,6 +92,13 @@ public class ServiceServiceHandler implements ServiceService {
         return SERVICE_MAPPER.toResponseList(servicesEntities);
     }
 
+    @Override
+    public void deleteService(Long id) {
+        serviceRepository.deleteById(id);
+
+        clearAllCaches();
+    }
+
     private ServiceEntity fetchServiceIfExist(Long id) {
         return serviceRepository.findById(id)
                 .orElseThrow(() -> {

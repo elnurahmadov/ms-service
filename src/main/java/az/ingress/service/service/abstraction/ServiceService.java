@@ -16,4 +16,6 @@ public interface ServiceService {
     ServiceDetailedResponse getServiceById(Long id);
 
     @Nullable List<ServiceResponse> getServicesByGroupId(Long id);
+
+    void deleteService(Long id);
 }
