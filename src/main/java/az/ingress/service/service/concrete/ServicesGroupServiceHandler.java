@@ -1,7 +1,6 @@
 package az.ingress.service.service.concrete;
 
 import az.ingress.service.aspect.ExecutionTracker;
-import az.ingress.service.dao.entity.DisplayTextEntity;
 import az.ingress.service.dao.entity.ServicesGroupEntity;
 import az.ingress.service.dao.repository.ServicesGroupRepository;
 import az.ingress.service.exception.NotFoundException;
@@ -41,12 +40,12 @@ public class ServicesGroupServiceHandler implements ServicesGroupService {
     @Transactional
     public void createServicesGroup(CreateServicesGroupRequest request) {
 
-        DisplayTextEntity displayText = displayTextService.createDisplayText(
+        var displayText = displayTextService.createDisplayText(
                 request.getLanguage(),
                 SERVICES_GROUP_DISPLAY_TEXT_ID
         );
 
-        ServicesGroupEntity servicesGroup = ServicesGroupEntity.builder()
+        var servicesGroup = ServicesGroupEntity.builder()
                 .displayText(displayText)
                 .build();
 
@@ -65,7 +64,7 @@ public class ServicesGroupServiceHandler implements ServicesGroupService {
             return response;
         }
 
-        List<ServicesGroupEntity> servicesGroupEntities = servicesGroupRepository.findAll();
+        var servicesGroupEntities = servicesGroupRepository.findAll();
         response = SERVICES_GROUP_MAPPER.toResponseList(servicesGroupEntities);
 
         cacheUtil.saveToCache(SERVICES_GROUP_CACHE_KEY, response, CACHE_EXPIRATION_HOURS, HOURS);
@@ -87,7 +86,7 @@ public class ServicesGroupServiceHandler implements ServicesGroupService {
     @Transactional
     public void updateServicesGroup(Long id, Language language) {
 
-        ServicesGroupEntity servicesGroup = fetchServicesGroupIfExist(id);
+        var servicesGroup = fetchServicesGroupIfExist(id);
 
         displayTextService.updateDisplayText(
                 servicesGroup.getDisplayText().getId(),

@@ -28,7 +28,7 @@ public class DisplayTextServiceHandler implements DisplayTextService {
     public DisplayTextEntity createDisplayText(Language language,
                                                DisplayTextColumn column) {
 
-        DisplayTextEntity displayText = DISPLAY_TEXT_MAPPER.toEntity(
+        var displayText = DISPLAY_TEXT_MAPPER.toEntity(
                 language,
                 column
         );
@@ -40,11 +40,16 @@ public class DisplayTextServiceHandler implements DisplayTextService {
     @Transactional
     public void updateDisplayText(Long id, Language language) {
 
-        DisplayTextEntity displayText = fetchDisplayTextIfExist(id);
+        var displayText = fetchDisplayTextIfExist(id);
 
         displayText.setAz(language.getAz());
         displayText.setEn(language.getEn());
         displayText.setRu(language.getRu());
+    }
+
+    @Override
+    public void deleteDisplayText(Long id) {
+        displayTextRepository.deleteById(id);
     }
 
     private DisplayTextEntity fetchDisplayTextIfExist(Long id) {
